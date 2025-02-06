@@ -1,0 +1,16 @@
+name: checkout
+
+on:
+  pull_request:
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the PR source branch (this is done automatically)
+        uses: actions/checkout@v2
+
+      - name: Show content of test.txt from the source branch (y)
+        run: |
+          echo "Content of test.txt from the source branch (y):"
+          cat test.txt
