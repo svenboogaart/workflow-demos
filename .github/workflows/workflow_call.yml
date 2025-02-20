@@ -21,7 +21,7 @@ jobs:
           echo "${{ toJson(github.event.inputs) }}"
 
 
-  check-boolean-with-quotes:
+  input-true-with-quotes:
     runs-on: ubuntu-latest
 
     # This job runs conditionally based on the value of the 'is_active' input
@@ -31,7 +31,7 @@ jobs:
       - name: Run if active
         run: echo "The job is running is_active the input == 'true'"
 
-  skip-check-boolean-with-quotes:
+  input-false-with-quotes:
     runs-on: ubuntu-latest
 
     # This job runs only if the 'is_active' input is false
@@ -41,7 +41,7 @@ jobs:
       - name: Skip if not active
         run: echo "The job is skipped because the input == 'false'"
 
-  check-boolean-without-quotes:
+  input-true-without-quotes:
     runs-on: ubuntu-latest
     # This job runs conditionally based on the value of the 'is_active' input
     if: ${{ github.event.inputs.is_active_input == true }}
@@ -49,7 +49,7 @@ jobs:
       - name: Run if active
         run: echo "The job is running because the input == true"
 
-  skip-check-boolean-without-quotes:
+  input-false-without-quotes:
     runs-on: ubuntu-latest
     # This job runs conditionally based on the value of the 'is_active' input
     if: ${{ github.event.inputs.is_active_input == false }}
