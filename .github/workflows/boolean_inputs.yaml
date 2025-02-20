@@ -13,6 +13,16 @@ on:
         type: boolean  # Define the input as a boolean
 
 jobs:
+  print-inputs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print all inputs dynamically
+        run: |
+          # Convert the inputs object to JSON format and print
+          echo "Printing all inputs:"
+          echo "${{ toJson(github.event.inputs) }}"  
+
   # Call the reusable workflow and pass the 'is_active' input
   call-reusable-workflow:
     uses: ./.github/workflows/workflow_call.yml

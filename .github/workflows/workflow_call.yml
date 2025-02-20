@@ -10,7 +10,15 @@ on:
 
 
 jobs:
+  print-inputs:
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Print all inputs dynamically
+        run: |
+          # Convert the inputs object to JSON format and print
+          echo "Printing all inputs:"
+          echo "${{ toJson(github.event.inputs) }}"
 
   check-boolean:
     runs-on: ubuntu-latest
