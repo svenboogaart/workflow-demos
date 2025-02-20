@@ -13,6 +13,13 @@ on:
         type: boolean  # Define the input as a boolean
 
 jobs:
+  # Call the reusable workflow and pass the 'is_active' input
+  call-reusable-workflow:
+    uses: your-username/your-repository/.github/workflows/reusable-workflow.yml@main
+    with:
+      is_active: ${{ github.event.inputs.is_active }}  # Pass the input to the reusable workflow
+
+
   check-boolean:
     runs-on: ubuntu-latest
 
