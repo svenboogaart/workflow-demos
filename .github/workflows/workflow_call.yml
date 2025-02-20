@@ -16,18 +16,15 @@ jobs:
     runs-on: ubuntu-latest
 
     # This job runs conditionally based on the value of the 'is_active' input
-    if: ${{ github.event.inputs.is_active == true }}
-
+    if: ${{ github.event.inputs.is_active == 'true' }}
     steps:
       - name: Run if active
         run: echo "The job is running because the input is true"
 
   skip-job:
     runs-on: ubuntu-latest
-
     # This job runs only if the 'is_active' input is false
-    if: ${{ github.event.inputs.is_active == false }}
-
+    if: ${{ github.event.inputs.is_active == 'false' }}
     steps:
       - name: Skip if not active
         run: echo "The job is skipped because the input is false"
