@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Run if active
-        run: echo "The job is running is_active the input is true"
+        run: echo "The job is running is_active the input == 'true'"
 
   skip-check-boolean-with-quotes:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Skip if not active
-        run: echo "The job is skipped because the input is false"
+        run: echo "The job is skipped because the input == 'false'"
 
   check-boolean-without-quotes:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
     if: ${{ github.event.inputs.is_active_input == true }}
     steps:
       - name: Run if active
-        run: echo "The job is running because the inactive input is true"
+        run: echo "The job is running because the input == true"
 
   skip-check-boolean-without-quotes:
     runs-on: ubuntu-latest
@@ -55,4 +55,4 @@ jobs:
     if: ${{ github.event.inputs.is_active_input == false }}
     steps:
       - name: Run if active
-        run: echo "The job is running because the inactive input is true"
+        run: echo "The job is running because the input == false"
