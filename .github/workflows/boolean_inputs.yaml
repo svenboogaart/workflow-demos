@@ -7,10 +7,7 @@ on:
         description: 'A boolean input to decide whether to run the job'
         required: true
         type: boolean  # Define the input as a boolean
-      is_inactive:
-        description: 'A boolean input to decide whether to run the job'
-        required: true
-        type: boolean  # Define the input as a boolean
+
 
 jobs:
   print-inputs:
@@ -30,7 +27,7 @@ jobs:
       is_active: true # Pass the input to the reusable workflow
 
 
-  check-boolean:
+  check-boolean-with-quotes:
     runs-on: ubuntu-latest
 
     # This job runs conditionally based on the value of the 'is_active' input
@@ -38,9 +35,9 @@ jobs:
 
     steps:
       - name: Run if active
-        run: echo "The job is running because the input is true"
+        run: echo "The job is running is_active the input is true"
 
-  skip-job:
+  skip-check-boolean-with-quotes:
     runs-on: ubuntu-latest
 
     # This job runs only if the 'is_active' input is false
@@ -50,19 +47,18 @@ jobs:
       - name: Skip if not active
         run: echo "The job is skipped because the input is false"
 
-
-  check-boolean-inactive:
+  check-boolean-without-quotes:
     runs-on: ubuntu-latest
     # This job runs conditionally based on the value of the 'is_active' input
-    if: ${{ github.event.inputs.is_inactive == 'false' }}
+    if: ${{ github.event.inputs.is_active == true }}
     steps:
       - name: Run if active
         run: echo "The job is running because the inactive input is true"
 
-  check-boolean-inactive-skip:
+  skip-check-boolean-without-quotes:
     runs-on: ubuntu-latest
     # This job runs conditionally based on the value of the 'is_active' input
-    if: ${{ github.event.inputs.is_inactive == 'true' }}
+    if: ${{ github.event.inputs.is_active == false }}
     steps:
       - name: Run if active
         run: echo "The job is running because the inactive input is true"
