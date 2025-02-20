@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # This job runs conditionally based on the value of the 'is_active' input
-    if: ${{ github.event.inputs.is_active == true }}
+    if: ${{ github.event.inputs.is_active == 'true' }}
 
     steps:
       - name: Run if active
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # This job runs only if the 'is_active' input is false
-    if: ${{ github.event.inputs.is_active == false }}
+    if: ${{ github.event.inputs.is_active == 'false' }}
 
     steps:
       - name: Skip if not active
@@ -37,7 +37,7 @@ jobs:
   check-boolean-inactive:
     runs-on: ubuntu-latest
     # This job runs conditionally based on the value of the 'is_active' input
-    if: ${{ github.event.inputs.is_inactive == false }}
+    if: ${{ github.event.inputs.is_inactive == 'false' }}
     steps:
       - name: Run if active
         run: echo "The job is running because the inactive input is true"
@@ -45,7 +45,7 @@ jobs:
   check-boolean-inactive-skip:
     runs-on: ubuntu-latest
     # This job runs conditionally based on the value of the 'is_active' input
-    if: ${{ github.event.inputs.is_inactive == true }}
+    if: ${{ github.event.inputs.is_inactive == 'true' }}
     steps:
       - name: Run if active
         run: echo "The job is running because the inactive input is true"
