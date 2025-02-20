@@ -1,0 +1,51 @@
+name: Conditional Job Based on Boolean Input
+
+on:
+  workflow_dispatch:
+    inputs:
+      is_active:
+        description: 'A boolean input to decide whether to run the job'
+        required: true
+        type: boolean  # Define the input as a boolean
+      is_inactive:
+        description: 'A boolean input to decide whether to run the job'
+        required: true
+        type: boolean  # Define the input as a boolean
+
+jobs:
+  check-boolean:
+    runs-on: ubuntu-latest
+
+    # This job runs conditionally based on the value of the 'is_active' input
+    if: ${{ github.event.inputs.is_active == true }}
+
+    steps:
+      - name: Run if active
+        run: echo "The job is running because the input is true"
+
+  skip-job:
+    runs-on: ubuntu-latest
+
+    # This job runs only if the 'is_active' input is false
+    if: ${{ github.event.inputs.is_active == false }}
+
+    steps:
+      - name: Skip if not active
+        run: echo "The job is skipped because the input is false"
+
+
+  check-boolean-inactive:
+    runs-on: ubuntu-latest
+    # This job runs conditionally based on the value of the 'is_active' input
+    if: ${{ github.event.inputs.is_inactive == false }}
+    steps:
+      - name: Run if active
+        run: echo "The job is running because the inactive input is true"
+
+  check-boolean-inactive-skip:
+    runs-on: ubuntu-latest
+    # This job runs conditionally based on the value of the 'is_active' input
+    if: ${{ github.event.inputs.is_inactive == true }}
+    steps:
+      - name: Run if active
+        run: echo "The job is running because the inactive input is true"
