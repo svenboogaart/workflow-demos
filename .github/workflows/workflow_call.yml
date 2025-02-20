@@ -5,8 +5,8 @@ on:
     inputs:
       is_active:
         description: 'A boolean to decide whether to run the job'
-        default: true
-        type: boolean  # Defining the input type as boolean
+        default: 'true'
+        type: string  # Defining the input type as boolean
 
 
 jobs:
