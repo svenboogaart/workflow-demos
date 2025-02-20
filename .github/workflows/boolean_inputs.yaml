@@ -24,7 +24,7 @@ jobs:
   call-reusable-workflow:
     uses: ./.github/workflows/workflow_call.yml
     with:
-      is_active: true # Pass the input to the reusable workflow
+      is_active: ${{ github.event.inputs.is_active }} # Pass the input to the reusable workflow
 
 
   input-true-with-quotes:
