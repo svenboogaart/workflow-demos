@@ -7,9 +7,8 @@ on:
   workflow_call:
 
 jobs:
-  python-script:
+  generate_outputs_in_python:
     runs-on: ubuntu-latest  # You can choose other runners like windows-latest or macos-latest.
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -28,3 +27,14 @@ jobs:
       output_1: ${{ steps.run_script.outputs.output_1 }}
       output_2: ${{ steps.run_script.outputs.output_2 }}
       output_3: ${{ steps.run_script.outputs.output_3 }}
+
+  print_outputs:
+    needs: generate_outputs_in_python  # This job depends on 'generate_outputs'
+    runs-on: ubuntu-latest   # Runner for this job
+
+    steps:
+      - name: Print All Outputs
+        run: |
+          echo "Output 1: ${{ needs.generate_outputs_in_python.outputs.output_1 }}"
+          echo "Output 2: ${{ needs.generate_outputs_in_python.outputs.output_2 }}"
+          echo "Output 3: ${{ needs.generate_outputs_in_python.outputs.output_3 }}"
