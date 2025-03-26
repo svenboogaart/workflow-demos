@@ -30,12 +30,12 @@ jobs:
         run: |
           result="${{ needs.job1.outputs.result }}"
           if [[ "$result" =~ ^-?[0-9]+$ && "$result" -gt 30 ]]; then
-            echo "result_is_valid=true" >> $GITHUB_ENV
+            echo "result_is_valid=true" >> GITHUB_OUTPUT
           else
-            echo "result_is_valid=false" >> $GITHUB_ENV
+            echo "result_is_valid=false" >> GITHUB_OUTPUT
           fi          
           echo "result_is_valid=${{ steps.check_value.outputs.result_is_valid }}"
 
       - name: Conditional step
-        if: ${{ env.result_is_valid == 'true' }}
+        if: ${{steps.check_value.outputs.result_is_valid == 'true' }}
         run: echo "Job 2 is running because the result is greater than 30."
