@@ -23,7 +23,17 @@ jobs:
   job2:
     needs: job1
     runs-on: ubuntu-latest
-    if: ${{ (needs.job1.outputs.result | int) > 30 }}
     steps:
+      - name: Check if the result is greater than 30
+        id: check_value
+        run: |
+          result="${{ needs.job1.outputs.result }}"
+          if [[ "$result" =~ ^-?[0-9]+$ && "$result" -gt 30 ]]; then
+            echo "result_is_valid=true" >> $GITHUB_ENV
+          else
+            echo "result_is_valid=false" >> $GITHUB_ENV
+          fi
+
       - name: Conditional step
+        if: ${{ env.result_is_valid == 'true' }}
         run: echo "Job 2 is running because the result is greater than 30."
