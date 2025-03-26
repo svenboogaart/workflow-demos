@@ -19,6 +19,7 @@ jobs:
         id: set_output
         run: |
           echo "result="${{ github.event.inputs.number }}"" >> $GITHUB_OUTPUT
+          
 
   job2:
     needs: job1
@@ -32,7 +33,8 @@ jobs:
             echo "result_is_valid=true" >> $GITHUB_ENV
           else
             echo "result_is_valid=false" >> $GITHUB_ENV
-          fi
+          fi          
+          echo "result_is_valid=${{ steps.check_value.outputs.result_is_valid }}"
 
       - name: Conditional step
         if: ${{ env.result_is_valid == 'true' }}
