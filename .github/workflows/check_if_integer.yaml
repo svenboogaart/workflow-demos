@@ -28,7 +28,7 @@ jobs:
       - name: Check if the result is less than threshold
         id: check_value
         run: |
-          result="${{ needs.job1.outputs.result }}"
+          result="${{ steps.set_output.outputs.result }}"  # Correct way to refer to the output from previous step
           threshold="${{ github.event.inputs.threshold }}"
 
           # Initialize a local variable to track the result validity
