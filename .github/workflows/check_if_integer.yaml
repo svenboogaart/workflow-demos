@@ -1,0 +1,29 @@
+name: Check if value is integer
+
+on:
+  workflow_dispatch:
+    inputs:
+      is_active:
+        description: 'An input that is evaluated'
+        required: true
+        type: string
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.set_output.outputs.result }}
+
+    steps:
+      - name: Run some command
+        id: set_output
+        run: |
+          echo "result="${{ github.event.inputs.number }}"" >> $GITHUB_OUTPUT
+
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    if: ${{ (needs.job1.outputs.result | int) > 30 }}
+    steps:
+      - name: Conditional step
+        run: echo "Job 2 is running because the result is greater than 30."
