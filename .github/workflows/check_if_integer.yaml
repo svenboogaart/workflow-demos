@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       result: ${{ steps.set_output.outputs.result }}
+      check_result_valid: ${{ steps.check_value.outputs.check_result_valid }}  # Add output here
 
     steps:
       - name: Run some command
@@ -24,11 +25,31 @@ jobs:
         run: |
           echo "result=${{ github.event.inputs.some_string }}" >> $GITHUB_OUTPUT
 
+      - name: Check if the result is less than threshold
+        id: check_value
+        run: |
+          result="${{ needs.job1.outputs.result }}"
+          threshold="${{ github.event.inputs.threshold }}"
+
+          # Initialize a local variable to track the result validity
+          var_check_result_valid="false"
+
+          # Check if the result is a valid integer and less than threshold
+          if [[ "$result" =~ ^-?[0-9]+$ && "$result" -lt "$threshold" ]]; then
+            var_check_result_valid="true"
+          fi
+
+          # Write the result of the validity check to $GITHUB_OUTPUT with a distinct variable name
+          echo "check_result_valid=$var_check_result_valid" >> $GITHUB_OUTPUT
+
+      - name: Print result validity
+        run: |
+          echo "Result validity: ${{ steps.check_value.outputs.check_result_valid }}"
+
   job2:
     needs: job1
     runs-on: ubuntu-latest
-    if: ${{ needs.job1.outputs.result =~ ^-?[0-9]+$ && needs.job1.outputs.result | int < github.event.inputs.threshold }}
+    if: ${{ needs.job1.outputs.check_result_valid == 'true' }}  # Skip job2 if condition is false
     steps:
       - name: Conditional step
-        run: echo "Job 2 is running because the result is a valid integer and less than the threshold."
-
+        run: echo "Job 2 is running because the result is less than the threshold."
