@@ -3,7 +3,7 @@ name: Check if value is integer
 on:
   workflow_dispatch:
     inputs:
-      is_active:
+      some_string:
         description: 'An input that is evaluated'
         required: true
         type: string
@@ -18,7 +18,7 @@ jobs:
       - name: Run some command
         id: set_output
         run: |
-          echo "result="${{ github.event.inputs.number }}"" >> $GITHUB_OUTPUT
+          echo "result="${{ github.event.inputs.some_string }}"" >> $GITHUB_OUTPUT
           
 
   job2:
@@ -28,14 +28,22 @@ jobs:
       - name: Check if the result is greater than 30
         id: check_value
         run: |
-          result="${{ needs.job1.outputs.result }}"
+                  result="${{ needs.job1.outputs.result }}"
+          
+          # Initialize a local variable to track the result validity
+          var_check_result_valid="false"
+          
+          # Check if the result is a valid integer and greater than 30
           if [[ "$result" =~ ^-?[0-9]+$ && "$result" -gt 30 ]]; then
-            echo "result_is_valid=true" >> GITHUB_OUTPUT
-          else
-            echo "result_is_valid=false" >> GITHUB_OUTPUT
-          fi          
-          echo "result_is_valid=${{ steps.check_value.outputs.result_is_valid }}"
+            var_check_result_valid="true"
+          fi
+          
+          # Write the result of the validity check to $GITHUB_OUTPUT with a distinct variable name
+          echo "check_result_valid=$var_check_result_valid" >> $GITHUB_OUTPUT
+          
+          # Print the result to the log for debugging
+          echo "check_result_valid=$var_check_result_valid"
 
       - name: Conditional step
-        if: ${{steps.check_value.outputs.result_is_valid == 'true' }}
+        if: ${{steps.check_value.outputs.check_result_valid == 'true' }}
         run: echo "Job 2 is running because the result is greater than 30."
