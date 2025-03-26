@@ -28,7 +28,7 @@ jobs:
       - name: Check if the result is greater than 30
         id: check_value
         run: |
-                  result="${{ needs.job1.outputs.result }}"
+          result="${{ needs.job1.outputs.result }}"
           
           # Initialize a local variable to track the result validity
           var_check_result_valid="false"
