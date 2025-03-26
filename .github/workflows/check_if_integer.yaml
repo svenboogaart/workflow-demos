@@ -7,6 +7,11 @@ on:
         description: 'An input that is evaluated'
         required: true
         type: string
+      threshold:
+        description: 'The threshold value to compare against (optional)'
+        required: false
+        type: number
+        default: 30
 
 jobs:
   job1:
@@ -18,23 +23,23 @@ jobs:
       - name: Run some command
         id: set_output
         run: |
-          echo "result="${{ github.event.inputs.some_string }}"" >> $GITHUB_OUTPUT
-          
+          echo "result=${{ github.event.inputs.some_string }}" >> $GITHUB_OUTPUT
 
   job2:
     needs: job1
     runs-on: ubuntu-latest
     steps:
-      - name: Check if the result is greater than 30
+      - name: Check if the result is less than threshold
         id: check_value
         run: |
           result="${{ needs.job1.outputs.result }}"
+          threshold="${{ github.event.inputs.threshold }}"
           
           # Initialize a local variable to track the result validity
           var_check_result_valid="false"
           
-          # Check if the result is a valid integer and greater than 30
-          if [[ "$result" =~ ^-?[0-9]+$ && "$result" -gt 30 ]]; then
+          # Check if the result is a valid integer and less than threshold (default 30 if not provided)
+          if [[ "$result" =~ ^-?[0-9]+$ && "$result" -lt "$threshold" ]]; then
             var_check_result_valid="true"
           fi
           
@@ -45,5 +50,5 @@ jobs:
           echo "check_result_valid=$var_check_result_valid"
 
       - name: Conditional step
-        if: ${{steps.check_value.outputs.check_result_valid == 'true' }}
-        run: echo "Job 2 is running because the result is greater than 30."
+        if: ${{ steps.check_value.outputs.check_result_valid == 'true' }}
+        run: echo "Job 2 is running because the result is less than the threshold."
